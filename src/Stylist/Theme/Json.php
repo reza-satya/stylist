@@ -1,9 +1,9 @@
 <?php
 
-namespace FloatingPoint\Stylist\Theme;
+namespace RezaSatya\Stylist\Theme;
 
 use File;
-use FloatingPoint\Stylist\Theme\Exceptions\ThemeJsonNotFoundException;
+use RezaSatya\Stylist\Theme\Exceptions\ThemeJsonNotFoundException;
 
 class Json
 {
