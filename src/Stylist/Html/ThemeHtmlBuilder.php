@@ -1,14 +1,14 @@
 <?php
 namespace FloatingPoint\Stylist\Html;
 
-use Collective\Html\HtmlBuilder;
 use FloatingPoint\Stylist\Facades\StylistFacade;
 use Illuminate\Routing\UrlGenerator;
+use Spatie\Html\Html;
 
 class ThemeHtmlBuilder
 {
     /**
-     * @var HtmlBuilder
+     * @var Html
      */
     private $html;
 
@@ -18,10 +18,10 @@ class ThemeHtmlBuilder
     private $url;
 
     /**
-     * @param HtmlBuilder $html
+     * @param Html $html
      * @param UrlGenerator $url
      */
-    public function __construct(HtmlBuilder $html, UrlGenerator $url)
+    public function __construct(Html $html, UrlGenerator $url)
     {
         $this->html = $html;
         $this->url = $url;
@@ -37,7 +37,11 @@ class ThemeHtmlBuilder
      */
     public function script($url, $attributes = array(), $secure = null)
     {
-        return $this->html->script($this->assetUrl($url), $attributes, $secure);
+        $asset = $this->url->asset($this->assetUrl($url), $secure);
+
+        return $this->html->element('script')
+            ->attributes($attributes)
+            ->attribute('src', $asset);
     }
 
     /**
@@ -63,7 +67,16 @@ class ThemeHtmlBuilder
             StylistFacade::activate($theme);
         }
 
-        $styles[] = $this->html->style($this->assetUrl($url), $attributes, $secure);
+        $asset = $this->url->asset($this->assetUrl($url), $secure);
+        $attributes = array_merge([
+            'media' => 'all',
+            'type' => 'text/css',
+        ], $attributes);
+
+        $styles[] = $this->html->element('link')
+            ->attributes($attributes)
+            ->attribute('rel', 'stylesheet')
+            ->attribute('href', $asset);
 
         return implode("\n", $styles);
     }
@@ -79,7 +92,14 @@ class ThemeHtmlBuilder
      */
     public function image($url, $alt = null, $attributes = array(), $secure = null)
     {
-        return $this->html->image($this->assetUrl($url), $alt, $attributes, $secure);
+        $asset = $this->url->asset($this->assetUrl($url), $secure);
+
+        if (! is_null($alt)) {
+            $attributes['alt'] = $alt;
+        }
+
+        return $this->html->img($asset)
+            ->attributes($attributes);
     }
 
     /**
@@ -105,7 +125,11 @@ class ThemeHtmlBuilder
      */
     public function linkAsset($url, $title = null, $attributes = array(), $secure = null)
     {
-        return $this->html->linkAsset($this->assetUrl($url), $title, $attributes, $secure);
+        $asset = $this->url->asset($this->assetUrl($url), $secure);
+
+        return $this->html->a($asset)
+            ->text($title ?: $asset)
+            ->attributes($attributes);
     }
 
     /**
