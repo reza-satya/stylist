@@ -8,6 +8,7 @@ use FloatingPoint\Stylist\Theme\Loader;
 use FloatingPoint\Stylist\Theme\Stylist;
 use Illuminate\Support\AggregateServiceProvider;
 use Illuminate\Foundation\AliasLoader;
+use Spatie\Html\Html;
 
 class StylistServiceProvider extends AggregateServiceProvider
 {
@@ -17,7 +18,7 @@ class StylistServiceProvider extends AggregateServiceProvider
      * @var array
      */
     protected $providers = [
-        'Collective\Html\HtmlServiceProvider'
+        'Spatie\\Html\\HtmlServiceProvider'
     ];
 
     /**
@@ -81,7 +82,7 @@ class StylistServiceProvider extends AggregateServiceProvider
     {
         $this->app->singleton('stylist.theme', function($app)
         {
-            return new ThemeHtmlBuilder($app['html'], $app['url']);
+            return new ThemeHtmlBuilder($app->make(Html::class), $app['url']);
         });
     }
 
