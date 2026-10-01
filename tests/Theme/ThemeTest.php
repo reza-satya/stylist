@@ -1,7 +1,7 @@
 <?php
 namespace Tests\Theme;
 
-use FloatingPoint\Stylist\Theme\Theme;
+use RezaSatya\Stylist\Theme\Theme;
 
 class ThemeTest extends \Tests\TestCase
 {

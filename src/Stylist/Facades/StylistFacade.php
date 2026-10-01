@@ -1,5 +1,5 @@
 <?php
-namespace FloatingPoint\Stylist\Facades;
+namespace RezaSatya\Stylist\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

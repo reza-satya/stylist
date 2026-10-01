@@ -7,7 +7,6 @@
       "email": "reza.satyawijaya@gmail.com"
     }
   ],
-  "version": "1.1.0",
   "require": {
     "php": "^7.2",
     "illuminate/support": "^6.0|^7.0",
@@ -19,12 +18,19 @@
   },
   "autoload": {
     "psr-4": {
-      "FloatingPoint\\Stylist\\": "src/Stylist",
+      "RezaSatya\\Stylist\\": "src/Stylist",
       "Tests\\": "tests"
     }
   },
   "minimum-stability": "dev",
   "config": {
     "preferred-install": "dist"
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "RezaSatya\\Stylist\\StylistServiceProvider"
+      ]
+    }
   }
 }

@@ -1,8 +1,8 @@
 <?php
 namespace Tests\Html;
 
-use FloatingPoint\Stylist\Facades\StylistFacade;
-use FloatingPoint\Stylist\Html\ThemeHtmlBuilder;
+use RezaSatya\Stylist\Facades\StylistFacade;
+use RezaSatya\Stylist\Html\ThemeHtmlBuilder;
 use Spatie\Html\Html;
 use Tests\TestCase;
 
