@@ -1,10 +1,14 @@
 {
-  "name": "reza-satya/stylist",
-  "description": "Laravel theming package. Forked for personal use",
+  "name": "floatingpoint/stylist",
+  "description": "Laravel 5 theming package.",
   "authors": [
     {
-      "name": "Reza Satyawijaya",
-      "email": "reza.satyawijaya@gmail.com"
+      "name": "Kirk Bushell",
+      "email": "torm3nt@gmail.com"
+    },
+    {
+      "name": "Mike Dugan",
+      "email": "mike@mjdugan.com"
     }
   ],
   "require": {
