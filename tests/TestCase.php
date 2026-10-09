@@ -26,15 +26,15 @@ class TestCase extends \Orchestra\Testbench\TestCase
     protected function getPackageProviders($app)
     {
         return [
-            'RezaSatya\Stylist\StylistServiceProvider',
+            'FloatingPoint\Stylist\StylistServiceProvider',
         ];
     }
 
     protected function getPackageAliases($app)
     {
         return [
-            'Stylist' => 'RezaSatya\Stylist\Facades\StylistFacade',
-            'Theme' => 'RezaSatya\Stylist\Facades\ThemeFacade',
+            'Stylist' => 'FloatingPoint\Stylist\Facades\StylistFacade',
+            'Theme' => 'FloatingPoint\Stylist\Facades\ThemeFacade',
         ];
     }
 
@@ -42,7 +42,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
     {
         $aliases = parent::getApplicationAliases($app);
         
-        $aliases['Stylist'] = 'RezaSatya\Stylist\Facades\StylistFacade';
+        $aliases['Stylist'] = 'FloatingPoint\Stylist\Facades\StylistFacade';
 
         return $aliases;
     }

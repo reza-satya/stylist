@@ -1,7 +1,7 @@
 <?php
-namespace RezaSatya\Stylist\Html;
+namespace FloatingPoint\Stylist\Html;
 
-use RezaSatya\Stylist\Facades\StylistFacade;
+use FloatingPoint\Stylist\Facades\StylistFacade;
 use Illuminate\Routing\UrlGenerator;
 use Spatie\Html\Html;
 

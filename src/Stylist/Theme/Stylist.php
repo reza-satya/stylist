@@ -1,9 +1,9 @@
 <?php
 
-namespace RezaSatya\Stylist\Theme;
+namespace FloatingPoint\Stylist\Theme;
 
 use Cache;
-use RezaSatya\Stylist\Theme\Exceptions\ThemeNotFoundException;
+use FloatingPoint\Stylist\Theme\Exceptions\ThemeNotFoundException;
 use Illuminate\Container\Container;
 
 /**
@@ -13,7 +13,7 @@ use Illuminate\Container\Container;
  * search for a given theme, register new ones or even search for themes within your application
  * directory.
  *
- * @package RezaSatya\Stylist\Theme
+ * @package FloatingPoint\Stylist\Theme
  */
 class Stylist
 {

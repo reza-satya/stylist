@@ -1,6 +1,6 @@
 <?php
 
-namespace RezaSatya\Stylist\Theme\Exceptions;
+namespace FloatingPoint\Stylist\Theme\Exceptions;
 
 class ThemeJsonNotFoundException extends \Exception
 {

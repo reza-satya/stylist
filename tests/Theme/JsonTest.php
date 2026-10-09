@@ -1,8 +1,8 @@
 <?php
 namespace Tests\Theme;
 
-use RezaSatya\Stylist\Theme\Json;
-use RezaSatya\Stylist\Theme\Exceptions\ThemeJsonNotFoundException;
+use FloatingPoint\Stylist\Theme\Json;
+use FloatingPoint\Stylist\Theme\Exceptions\ThemeJsonNotFoundException;
 
 class JsonTest extends \Tests\TestCase
 {
@@ -29,7 +29,7 @@ class JsonTest extends \Tests\TestCase
     }
 
     /**
-     * @expectException RezaSatya\Stylist\Theme\Exceptions\ThemeJsonNotFoundException
+     * @expectException FloatingPoint\Stylist\Theme\Exceptions\ThemeJsonNotFoundException
      */
     public function testThemeFileMissing()
     {

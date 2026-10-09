@@ -1,7 +1,7 @@
 <?php
 namespace Tests\Theme;
 
-use RezaSatya\Stylist\Theme\Loader;
+use FloatingPoint\Stylist\Theme\Loader;
 
 class LoaderTest extends \Tests\TestCase
 {

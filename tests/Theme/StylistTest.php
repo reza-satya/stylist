@@ -1,10 +1,10 @@
 <?php
 namespace Tests\Theme;
 
-use RezaSatya\Stylist\Theme\Loader;
-use RezaSatya\Stylist\Theme\Stylist;
-use RezaSatya\Stylist\Theme\Theme;
-use RezaSatya\Stylist\Theme\Exceptions\ThemeNotFoundException;
+use FloatingPoint\Stylist\Theme\Loader;
+use FloatingPoint\Stylist\Theme\Stylist;
+use FloatingPoint\Stylist\Theme\Theme;
+use FloatingPoint\Stylist\Theme\Exceptions\ThemeNotFoundException;
 
 class StylistTest extends \Tests\TestCase
 {
@@ -67,7 +67,7 @@ class StylistTest extends \Tests\TestCase
     }
 
     /**
-     * @expectException RezaSatya\Stylist\Theme\Exceptions\ThemeNotFoundException
+     * @expectException FloatingPoint\Stylist\Theme\Exceptions\ThemeNotFoundException
      */
     public function testInvalidTheme()
     {

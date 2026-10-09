@@ -1,11 +1,11 @@
 <?php
-namespace RezaSatya\Stylist;
+namespace FloatingPoint\Stylist;
 
 use Cache;
 use Config;
-use RezaSatya\Stylist\Html\ThemeHtmlBuilder;
-use RezaSatya\Stylist\Theme\Loader;
-use RezaSatya\Stylist\Theme\Stylist;
+use FloatingPoint\Stylist\Html\ThemeHtmlBuilder;
+use FloatingPoint\Stylist\Theme\Loader;
+use FloatingPoint\Stylist\Theme\Stylist;
 use Illuminate\Support\AggregateServiceProvider;
 use Illuminate\Foundation\AliasLoader;
 use Spatie\Html\Html;
@@ -93,10 +93,10 @@ class StylistServiceProvider extends AggregateServiceProvider
     {
         $aliasLoader = AliasLoader::getInstance();
 
-        $aliasLoader->alias('Stylist', 'RezaSatya\Stylist\Facades\StylistFacade');
-        $aliasLoader->alias('Theme', 'RezaSatya\Stylist\Facades\ThemeFacade');
+        $aliasLoader->alias('Stylist', 'FloatingPoint\Stylist\Facades\StylistFacade');
+        $aliasLoader->alias('Theme', 'FloatingPoint\Stylist\Facades\ThemeFacade');
 
-        $this->app->alias('stylist', 'RezaSatya\Stylist\Theme\Stylist');
+        $this->app->alias('stylist', 'FloatingPoint\Stylist\Theme\Stylist');
     }
 
     /**
@@ -105,7 +105,7 @@ class StylistServiceProvider extends AggregateServiceProvider
     private function registerCommands()
     {
         $this->commands(
-            'RezaSatya\Stylist\Console\PublishAssetsCommand'
+            'FloatingPoint\Stylist\Console\PublishAssetsCommand'
         );
     }
 

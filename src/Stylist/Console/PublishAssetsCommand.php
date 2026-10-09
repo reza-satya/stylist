@@ -1,7 +1,7 @@
 <?php
-namespace RezaSatya\Stylist\Console;
+namespace FloatingPoint\Stylist\Console;
 
-use RezaSatya\Stylist\Theme\Theme;
+use FloatingPoint\Stylist\Theme\Theme;
 use Stylist;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Container\Container;

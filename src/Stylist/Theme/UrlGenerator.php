@@ -1,5 +1,5 @@
 <?php
-namespace RezaSatya\Stylist\Theme;
+namespace FloatingPoint\Stylist\Theme;
 
 /**
  * Class UrlGenerator
@@ -7,7 +7,7 @@ namespace RezaSatya\Stylist\Theme;
  * The sole purpose of this class is to ensure that any asset requests go via the appropriate
  * theme directory, rather than to the usual css/js.etc. locations.
  *
- * @package RezaSatya\Stylist\Theme
+ * @package FloatingPoint\Stylist\Theme
  */
 class UrlGenerator extends \Illuminate\Routing\UrlGenerator
 {

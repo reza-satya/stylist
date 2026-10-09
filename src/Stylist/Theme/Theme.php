@@ -1,5 +1,5 @@
 <?php
-namespace RezaSatya\Stylist\Theme;
+namespace FloatingPoint\Stylist\Theme;
 
 use File;
 use Illuminate\Contracts\Support\Arrayable;
@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
  * Theme objects are just dumb little DTOs, used as a reference point for collecting information
  * about themes, namely their name, description and parent details.
  *
- * @package RezaSatya\Stylist\Theme
+ * @package FloatingPoint\Stylist\Theme
  */
 class Theme implements Arrayable
 {

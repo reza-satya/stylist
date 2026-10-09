@@ -22,19 +22,12 @@
   },
   "autoload": {
     "psr-4": {
-      "RezaSatya\\Stylist\\": "src/Stylist",
+      "FloatingPoint\\Stylist\\": "src/Stylist",
       "Tests\\": "tests"
     }
   },
   "minimum-stability": "dev",
   "config": {
     "preferred-install": "dist"
-  },
-  "extra": {
-    "laravel": {
-      "providers": [
-        "RezaSatya\\Stylist\\StylistServiceProvider"
-      ]
-    }
   }
 }
