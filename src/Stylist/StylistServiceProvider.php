@@ -1,13 +1,13 @@
 <?php
+
 namespace FloatingPoint\Stylist;
 
-use Cache;
-use Config;
 use FloatingPoint\Stylist\Html\ThemeHtmlBuilder;
 use FloatingPoint\Stylist\Theme\Loader;
 use FloatingPoint\Stylist\Theme\Stylist;
-use Illuminate\Support\AggregateServiceProvider;
 use Illuminate\Foundation\AliasLoader;
+use Illuminate\Support\AggregateServiceProvider;
+use Spatie\Html\Html;
 
 class StylistServiceProvider extends AggregateServiceProvider
 {
@@ -17,7 +17,7 @@ class StylistServiceProvider extends AggregateServiceProvider
      * @var array
      */
     protected $providers = [
-        'Collective\Html\HtmlServiceProvider'
+        'Spatie\\Html\\HtmlServiceProvider',
     ];
 
     /**
@@ -58,7 +58,7 @@ class StylistServiceProvider extends AggregateServiceProvider
 
         $theme = $this->app['config']->get('stylist.themes.activate', null);
 
-        if (!is_null($theme)) {
+        if (! is_null($theme)) {
             $stylist->activate($theme, true);
         }
     }
@@ -68,8 +68,7 @@ class StylistServiceProvider extends AggregateServiceProvider
      */
     protected function registerStylist()
     {
-        $this->app->singleton('stylist', function($app)
-        {
+        $this->app->singleton('stylist', function ($app) {
             return new Stylist(new Loader, $app);
         });
     }
@@ -79,9 +78,8 @@ class StylistServiceProvider extends AggregateServiceProvider
      */
     protected function registerThemeBuilder()
     {
-        $this->app->singleton('stylist.theme', function($app)
-        {
-            return new ThemeHtmlBuilder($app['html'], $app['url']);
+        $this->app->singleton('stylist.theme', function ($app) {
+            return new ThemeHtmlBuilder($app->make(Html::class), $app['url']);
         });
     }
 
@@ -114,7 +112,7 @@ class StylistServiceProvider extends AggregateServiceProvider
     protected function registerConfiguration()
     {
         $this->publishes([
-            __DIR__ . '/../config/config.php' => config_path('stylist.php')
+            __DIR__.'/../config/config.php' => config_path('stylist.php'),
         ]);
     }
 
@@ -127,8 +125,7 @@ class StylistServiceProvider extends AggregateServiceProvider
     {
         return array_merge(parent::provides(), [
             'Stylist',
-            'Theme'
+            'Theme',
         ]);
     }
-
 }
