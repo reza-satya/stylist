@@ -2,9 +2,9 @@
 
 namespace FloatingPoint\Stylist\Console;
 
+use FloatingPoint\Stylist\Facades\StylistFacade as Stylist;
 use FloatingPoint\Stylist\Theme\Theme;
 use Illuminate\Console\Command;
-use Stylist;
 
 class PublishAssetsCommand extends Command
 {
@@ -40,15 +40,15 @@ class PublishAssetsCommand extends Command
      */
     protected function setupThemes()
     {
-        $this->laravel['events']->dispatch('stylist.publishing');
+        $this->laravel->make('events')->dispatch('stylist.publishing');
 
         $themes = Stylist::themes();
 
         foreach ($themes as $theme) {
             $path = $theme->getPath();
 
-            if ($this->laravel['files']->exists($path.'assets/')) {
-                $this->laravel['stylist']->registerPath($path);
+            if ($this->laravel->make('files')->exists($path.'assets/')) {
+                $this->laravel->make('stylist')->registerPath($path);
             }
         }
     }
@@ -58,11 +58,11 @@ class PublishAssetsCommand extends Command
      */
     protected function publishAssets()
     {
-        $themes = $this->laravel['stylist']->themes();
+        $themes = $this->laravel->make('stylist')->themes();
         $requestedTheme = $this->argument('theme');
 
         if ($requestedTheme) {
-            $theme = $this->laravel['stylist']->get($requestedTheme);
+            $theme = $this->laravel->make('stylist')->get($requestedTheme);
 
             return $this->publishSingle($theme);
         }
@@ -79,7 +79,7 @@ class PublishAssetsCommand extends Command
     {
         $themePath = public_path('themes/'.$theme->getAssetPath());
 
-        $this->laravel['files']->copyDirectory($theme->getPath().'/assets/', $themePath);
+        $this->laravel->make('files')->copyDirectory($theme->getPath().'/assets/', $themePath);
 
         $this->info($theme->getName().' assets published.');
     }
