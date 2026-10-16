@@ -1,27 +1,17 @@
 <?php
 namespace FloatingPoint\Stylist\Html;
 
-use Collective\Html\HtmlBuilder;
 use FloatingPoint\Stylist\Facades\StylistFacade;
 use Illuminate\Routing\UrlGenerator;
+use Spatie\Html\Html;
 
 class ThemeHtmlBuilder
 {
-    /**
-     * @var HtmlBuilder
-     */
-    private $html;
+    private Html $html;
 
-    /**
-     * @var UrlGenerator
-     */
-    private $url;
+    private UrlGenerator $url;
 
-    /**
-     * @param HtmlBuilder $html
-     * @param UrlGenerator $url
-     */
-    public function __construct(HtmlBuilder $html, UrlGenerator $url)
+    public function __construct(Html $html, UrlGenerator $url)
     {
         $this->html = $html;
         $this->url = $url;
@@ -29,27 +19,21 @@ class ThemeHtmlBuilder
 
     /**
      * Generate a link to a JavaScript file.
-     *
-     * @param  string  $url
-     * @param  array   $attributes
-     * @param  bool    $secure
-     * @return string
      */
-    public function script($url, $attributes = array(), $secure = null)
+    public function script(string $url, array $attributes = [], bool|null $secure = null): string
     {
-        return $this->html->script($this->assetUrl($url), $attributes, $secure);
+        $asset = $this->url->asset($this->assetUrl($url), $secure);
+
+        return $this->html->element('script')
+            ->attributes($attributes)
+            ->attribute('src', $asset);
     }
 
     /**
      * Generate a link to a CSS file. With Stylist, this could actually generate
      * numerous style tags, due to CSS inheritance requirements.
-     *
-     * @param  string  $url
-     * @param  array   $attributes
-     * @param  bool    $secure
-     * @return string
      */
-    public function style($url, $attributes = array(), $secure = null)
+    public function style(string $url, array $attributes = [], bool|null $secure = null): string
     {
         $styles = [];
         $theme = StylistFacade::current();
@@ -63,58 +47,60 @@ class ThemeHtmlBuilder
             StylistFacade::activate($theme);
         }
 
-        $styles[] = $this->html->style($this->assetUrl($url), $attributes, $secure);
+        $asset = $this->url->asset($this->assetUrl($url), $secure);
+        $attributes = array_merge([
+            'media' => 'all',
+            'type' => 'text/css',
+        ], $attributes);
+
+        $styles[] = $this->html->element('link')
+            ->attributes($attributes)
+            ->attribute('rel', 'stylesheet')
+            ->attribute('href', $asset);
 
         return implode("\n", $styles);
     }
 
     /**
      * Generate an HTML image element.
-     *
-     * @param  string  $url
-     * @param  string  $alt
-     * @param  array   $attributes
-     * @param  bool    $secure
-     * @return string
      */
-    public function image($url, $alt = null, $attributes = array(), $secure = null)
+    public function image(string $url, string|null $alt = null, array $attributes = [], bool|null $secure = null): string
     {
-        return $this->html->image($this->assetUrl($url), $alt, $attributes, $secure);
+        $asset = $this->url->asset($this->assetUrl($url), $secure);
+
+        if (! is_null($alt)) {
+            $attributes['alt'] = $alt;
+        }
+
+        return $this->html->img($asset)
+            ->attributes($attributes);
     }
 
     /**
      * Returns the theme's public URI location. This is not a full URL. If you wish
      * for a full URL, simply add the site's URL configuration to this path.
-     *
-     * @param string $file
-     * @return string
      */
-    public function url($file = '')
+    public function url(string $file = ''): string
     {
         return url($this->assetUrl($file));
     }
 
     /**
      * Generate a HTML link to an asset.
-     *
-     * @param  string  $url
-     * @param  string  $title
-     * @param  array   $attributes
-     * @param  bool    $secure
-     * @return string
      */
-    public function linkAsset($url, $title = null, $attributes = array(), $secure = null)
+    public function linkAsset(string $url, string|null $title = null, array $attributes = array(), bool|null $secure = null): string
     {
-        return $this->html->linkAsset($this->assetUrl($url), $title, $attributes, $secure);
+        $asset = $this->url->asset($this->assetUrl($url), $secure);
+
+        return $this->html->a($asset)
+            ->text($title ?: $asset)
+            ->attributes($attributes);
     }
 
     /**
      * Do a few checks to get the theme path for a given asset url.
-     *
-     * @param string $url
-     * @return string
      */
-    protected function assetUrl($url)
+    protected function assetUrl(string $url): string
     {
         if ($this->url->isValidUrl($url)) {
             return $url;
