@@ -21,7 +21,8 @@
     "spatie/laravel-html": "^3.5"
   },
   "require-dev": {
-    "orchestra/testbench": "^8.0"
+    "orchestra/testbench": "^8.0",
+    "larastan/larastan": "^2.11"
   },
   "autoload": {
     "psr-4": {
