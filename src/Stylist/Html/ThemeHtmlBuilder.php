@@ -21,7 +21,7 @@ class ThemeHtmlBuilder
     /**
      * Generate a link to a JavaScript file.
      */
-    public function script(string $url, array $attributes = [], bool|null $secure = null): string
+    public function script(string $url, array $attributes = [], ?bool $secure = null): string
     {
         $asset = $this->url->asset($this->assetUrl($url), $secure);
 
@@ -34,7 +34,7 @@ class ThemeHtmlBuilder
      * Generate a link to a CSS file. With Stylist, this could actually generate
      * numerous style tags, due to CSS inheritance requirements.
      */
-    public function style(string $url, array $attributes = [], bool|null $secure = null): string
+    public function style(string $url, array $attributes = [], ?bool $secure = null): string
     {
         $styles = [];
         $theme = StylistFacade::current();
@@ -65,7 +65,7 @@ class ThemeHtmlBuilder
     /**
      * Generate an HTML image element.
      */
-    public function image(string $url, string|null $alt = null, array $attributes = [], bool|null $secure = null): string
+    public function image(string $url, ?string $alt = null, array $attributes = [], ?bool $secure = null): string
     {
         $asset = $this->url->asset($this->assetUrl($url), $secure);
 
@@ -89,7 +89,7 @@ class ThemeHtmlBuilder
     /**
      * Generate a HTML link to an asset.
      */
-    public function linkAsset(string $url, string|null $title = null, array $attributes = [], bool|null $secure = null): string
+    public function linkAsset(string $url, ?string $title = null, array $attributes = [], ?bool $secure = null): string
     {
         $asset = $this->url->asset($this->assetUrl($url), $secure);
 
