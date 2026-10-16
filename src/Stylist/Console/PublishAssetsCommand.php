@@ -1,18 +1,17 @@
 <?php
+
 namespace FloatingPoint\Stylist\Console;
 
 use FloatingPoint\Stylist\Theme\Theme;
-use Stylist;
 use Illuminate\Console\Command;
-use Illuminate\Contracts\Container\Container;
-use Symfony\Component\Console\Input\InputArgument;
+use Stylist;
 
 class PublishAssetsCommand extends Command
 {
     /**
      * @var string
      */
-    protected $name = 'stylist:publish';
+    protected $signature = 'stylist:publish {theme? : Name of the theme to publish}';
 
     /**
      * @var string
@@ -75,27 +74,13 @@ class PublishAssetsCommand extends Command
 
     /**
      * Publish a single theme's assets.
-     *
-     * @param Theme $theme
      */
     protected function publishSingle(Theme $theme)
     {
-        $themePath = public_path('themes/' . $theme->getAssetPath());
+        $themePath = public_path('themes/'.$theme->getAssetPath());
 
         $this->laravel['files']->copyDirectory($theme->getPath().'/assets/', $themePath);
 
         $this->info($theme->getName().' assets published.');
-    }
-
-    /**
-     * Developers can publish a specific theme should they wish.
-     *
-     * @return array
-     */
-    public function getArguments()
-    {
-        return [
-            ['theme', InputArgument::OPTIONAL, 'Name of the theme you wish to publish']
-        ];
     }
 }
