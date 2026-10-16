@@ -2,10 +2,14 @@
 
 namespace FloatingPoint\Stylist\Theme\Exceptions;
 
-class ThemeJsonNotFoundException extends \Exception
+use RuntimeException;
+
+class ThemeJsonNotFoundException extends RuntimeException
 {
-	public function __construct($path)
+    public function __construct(string $path)
     {
-        $this->message = "theme.json file does not exist at [$path].";
+        parent::__construct(
+            "theme.json file does not exist at [$path]."
+        );
     }
 }
