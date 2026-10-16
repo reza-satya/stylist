@@ -5,6 +5,7 @@ namespace FloatingPoint\Stylist;
 use FloatingPoint\Stylist\Html\ThemeHtmlBuilder;
 use FloatingPoint\Stylist\Theme\Loader;
 use FloatingPoint\Stylist\Theme\Stylist;
+use FloatingPoint\Stylist\Theme\UrlGenerator;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\AggregateServiceProvider;
 use Spatie\Html\Html;
@@ -48,18 +49,18 @@ class StylistServiceProvider extends AggregateServiceProvider
      */
     protected function bootThemes()
     {
-        $stylist = $this->app['stylist'];
-        $paths = $this->app['config']->get('stylist.themes.paths', []);
+        $stylist = $this->app->make('stylist');
+        $paths = config('stylist.themes.paths', []);
 
         foreach ($paths as $path) {
             $themePaths = $stylist->discover($path);
             $stylist->registerPaths($themePaths);
         }
 
-        $theme = $this->app['config']->get('stylist.themes.activate', null);
+        $theme = config('stylist.themes.activate');
 
-        if (! is_null($theme)) {
-            $stylist->activate($theme, true);
+        if ($theme !== null) {
+            $stylist->activate($theme);
         }
     }
 
@@ -79,7 +80,10 @@ class StylistServiceProvider extends AggregateServiceProvider
     protected function registerThemeBuilder()
     {
         $this->app->singleton('stylist.theme', function ($app) {
-            return new ThemeHtmlBuilder($app->make(Html::class), $app['url']);
+            return new ThemeHtmlBuilder(
+                $app->make(Html::class),
+                $app->make(UrlGenerator::class)
+            );
         });
     }
 
@@ -113,19 +117,6 @@ class StylistServiceProvider extends AggregateServiceProvider
     {
         $this->publishes([
             __DIR__.'/../config/config.php' => config_path('stylist.php'),
-        ]);
-    }
-
-    /**
-     * An array of classes that Stylist provides.
-     *
-     * @return array
-     */
-    public function provides()
-    {
-        return array_merge(parent::provides(), [
-            'Stylist',
-            'Theme',
         ]);
     }
 }
