@@ -38,13 +38,4 @@ class TestCase extends \Orchestra\Testbench\TestCase
             'Theme' => 'FloatingPoint\Stylist\Facades\ThemeFacade',
         ];
     }
-
-    protected function getApplicationAliases($app): array
-    {
-        $aliases = parent::getApplicationAliases($app);
-        
-        $aliases['Stylist'] = 'FloatingPoint\Stylist\Facades\StylistFacade';
-
-        return $aliases;
-    }
 }
