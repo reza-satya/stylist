@@ -1,6 +1,6 @@
 {
   "name": "floatingpoint/stylist",
-  "description": "Laravel 5 theming package.",
+  "description": "Laravel 10 theming package.",
   "authors": [
     {
       "name": "Kirk Bushell",
@@ -12,14 +12,16 @@
     }
   ],
   "require": {
-    "php": "^7.0",
-    "laravelcollective/html": "~5.5",
-    "illuminate/support": "~5.5"
+    "php": "^8.1",
+    "illuminate/console": "^10.0",
+    "illuminate/container": "^10.0",
+    "illuminate/routing": "^10.0",
+    "illuminate/support": "^10.0",
+    "illuminate/view": "^10.0",
+    "spatie/laravel-html": "^3.5"
   },
   "require-dev": {
-    "mockery/mockery": "^0.9.5",
-    "orchestra/testbench": "~3.0",
-    "phpunit/phpunit": "~6.0"
+    "orchestra/testbench": "^8.0"
   },
   "autoload": {
     "psr-4": {
@@ -27,7 +29,7 @@
       "Tests\\": "tests"
     }
   },
-  "minimum-stability": "dev",
+  "prefer-stable": true,
   "config": {
     "preferred-install": "dist"
   }
