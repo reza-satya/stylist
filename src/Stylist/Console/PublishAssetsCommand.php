@@ -1,18 +1,17 @@
 <?php
+
 namespace FloatingPoint\Stylist\Console;
 
+use FloatingPoint\Stylist\Facades\StylistFacade as Stylist;
 use FloatingPoint\Stylist\Theme\Theme;
-use Stylist;
 use Illuminate\Console\Command;
-use Illuminate\Contracts\Container\Container;
-use Symfony\Component\Console\Input\InputArgument;
 
 class PublishAssetsCommand extends Command
 {
     /**
      * @var string
      */
-    protected $name = 'stylist:publish';
+    protected $signature = 'stylist:publish {theme? : Name of the theme to publish}';
 
     /**
      * @var string
@@ -41,15 +40,15 @@ class PublishAssetsCommand extends Command
      */
     protected function setupThemes()
     {
-        $this->laravel['events']->dispatch('stylist.publishing');
+        $this->laravel->make('events')->dispatch('stylist.publishing');
 
         $themes = Stylist::themes();
 
         foreach ($themes as $theme) {
             $path = $theme->getPath();
 
-            if ($this->laravel['files']->exists($path.'assets/')) {
-                $this->laravel['stylist']->registerPath($path);
+            if ($this->laravel->make('files')->exists($path.'assets/')) {
+                $this->laravel->make('stylist')->registerPath($path);
             }
         }
     }
@@ -59,11 +58,11 @@ class PublishAssetsCommand extends Command
      */
     protected function publishAssets()
     {
-        $themes = $this->laravel['stylist']->themes();
+        $themes = $this->laravel->make('stylist')->themes();
         $requestedTheme = $this->argument('theme');
 
         if ($requestedTheme) {
-            $theme = $this->laravel['stylist']->get($requestedTheme);
+            $theme = $this->laravel->make('stylist')->get($requestedTheme);
 
             return $this->publishSingle($theme);
         }
@@ -75,27 +74,13 @@ class PublishAssetsCommand extends Command
 
     /**
      * Publish a single theme's assets.
-     *
-     * @param Theme $theme
      */
     protected function publishSingle(Theme $theme)
     {
-        $themePath = public_path('themes/' . $theme->getAssetPath());
+        $themePath = public_path('themes/'.$theme->getAssetPath());
 
-        $this->laravel['files']->copyDirectory($theme->getPath().'/assets/', $themePath);
+        $this->laravel->make('files')->copyDirectory($theme->getPath().'/assets/', $themePath);
 
         $this->info($theme->getName().' assets published.');
-    }
-
-    /**
-     * Developers can publish a specific theme should they wish.
-     *
-     * @return array
-     */
-    public function getArguments()
-    {
-        return [
-            ['theme', InputArgument::OPTIONAL, 'Name of the theme you wish to publish']
-        ];
     }
 }
