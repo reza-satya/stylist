@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Html;
 
 use FloatingPoint\Stylist\Facades\StylistFacade;
@@ -18,7 +19,7 @@ class ThemeHtmlBuilderTest extends TestCase
         StylistFacade::activate('Parent theme');
     }
 
-    public function testScriptUrlCreation()
+    public function test_script_url_creation()
     {
         $script = $this->builder->script('script.js');
 
@@ -27,7 +28,7 @@ class ThemeHtmlBuilderTest extends TestCase
         $this->assertStringContainsString('src=', (string) $script);
     }
 
-    public function testStyleUrlCreation()
+    public function test_style_url_creation()
     {
         $style = $this->builder->style('css/app.css');
 
@@ -36,21 +37,21 @@ class ThemeHtmlBuilderTest extends TestCase
         $this->assertStringContainsString('rel="stylesheet"', (string) $style);
     }
 
-    public function testImageUrlCreation()
+    public function test_image_url_creation()
     {
         $image = $this->builder->image('images/my-image.png');
 
         $this->assertStringContainsString('/themes/parent-theme/images/my-image.png', (string) $image);
     }
 
-    public function testHtmlLinkAssetCreation()
+    public function test_html_link_asset_creation()
     {
         $flashLink = $this->builder->linkAsset('swf/video.swf');
 
         $this->assertStringContainsString('/themes/parent-theme/swf/video.swf', (string) $flashLink);
     }
 
-    public function testAssetUrlResponse()
+    public function test_asset_url_response()
     {
         $this->assertEquals(url('themes/parent-theme/'), $this->builder->url());
         $this->assertEquals(url('themes/parent-theme/favicon.ico'), $this->builder->url('favicon.ico'));

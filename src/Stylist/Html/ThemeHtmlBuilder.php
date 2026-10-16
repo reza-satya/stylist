@@ -1,4 +1,5 @@
 <?php
+
 namespace FloatingPoint\Stylist\Html;
 
 use FloatingPoint\Stylist\Facades\StylistFacade;
@@ -88,7 +89,7 @@ class ThemeHtmlBuilder
     /**
      * Generate a HTML link to an asset.
      */
-    public function linkAsset(string $url, string|null $title = null, array $attributes = array(), bool|null $secure = null): string
+    public function linkAsset(string $url, string|null $title = null, array $attributes = [], bool|null $secure = null): string
     {
         $asset = $this->url->asset($this->assetUrl($url), $secure);
 
