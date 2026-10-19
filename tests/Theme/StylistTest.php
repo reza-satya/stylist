@@ -1,13 +1,16 @@
 <?php
+
 namespace Tests\Theme;
 
+use FloatingPoint\Stylist\Theme\Exceptions\ThemeNotFoundException;
 use FloatingPoint\Stylist\Theme\Loader;
 use FloatingPoint\Stylist\Theme\Stylist;
 use FloatingPoint\Stylist\Theme\Theme;
+use Tests\TestCase;
 
-class StylistTest extends \Tests\TestCase
+class StylistTest extends TestCase
 {
-    public function testThemeRegistration()
+    public function test_theme_registration()
     {
         $stylist = new Stylist(new Loader, $this->app);
         $theme = new Theme('n', 'd', 'path');
@@ -18,7 +21,7 @@ class StylistTest extends \Tests\TestCase
         $this->assertEquals($stylist->current(), $theme);
     }
 
-    public function testThemeDiscovery()
+    public function test_theme_discovery()
     {
         $stylist = new Stylist(new Loader, $this->app);
         $themes = $stylist->discover(__DIR__.'/../Stubs');
@@ -26,7 +29,7 @@ class StylistTest extends \Tests\TestCase
         $this->assertCount(3, $themes);
     }
 
-    public function testCacheManagement()
+    public function test_cache_management()
     {
         $stylist = new Stylist(new Loader, $this->app);
         $theme = new Theme('name', 'desc', 'path');
@@ -40,7 +43,7 @@ class StylistTest extends \Tests\TestCase
         $this->assertEquals($theme, $stylist->get('name'));
     }
 
-    public function testPathRegistration()
+    public function test_path_registration()
     {
         $stylist = new Stylist(new Loader, $this->app);
 
@@ -49,7 +52,7 @@ class StylistTest extends \Tests\TestCase
         $this->assertEquals('Parent theme', $stylist->get('Parent theme')->getName());
     }
 
-    public function testMultiplePathRegistrations()
+    public function test_multiple_path_registrations()
     {
         $stylist = new Stylist(new Loader, $this->app);
         $paths = $stylist->discover(__DIR__.'/../Stubs');
@@ -65,16 +68,18 @@ class StylistTest extends \Tests\TestCase
         $this->assertTrue($view->exists('layouts.application')); // should pull this from the parent theme
     }
 
-    /**
-     * @expectedException FloatingPoint\Stylist\Theme\Exceptions\ThemeNotFoundException
-     */
-    public function testInvalidTheme()
+    public function test_invalid_theme()
     {
+        $this->expectException(ThemeNotFoundException::class);
+        $this->expectExceptionMessage(
+            'Theme [invalidtheme] is not registered with Stylist.'
+        );
+
         $stylist = new Stylist(new Loader, $this->app);
         $stylist->get('invalidtheme');
     }
 
-    public function testThemeViewIsOverloadable()
+    public function test_theme_view_is_overloadable()
     {
         $stylist = new Stylist(new Loader, $this->app);
         $paths = $stylist->discover(__DIR__.'/../Stubs');
