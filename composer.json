@@ -1,6 +1,7 @@
 {
   "name": "floatingpoint/stylist",
   "description": "Laravel 10 theming package.",
+  "license": "MIT",
   "authors": [
     {
       "name": "Kirk Bushell",
