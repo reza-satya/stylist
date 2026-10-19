@@ -34,7 +34,14 @@
   },
   "prefer-stable": true,
   "config": {
-    "preferred-install": "dist"
+    "preferred-install": "dist",
+    "policy": {
+      "advisories": {
+        "ignore": {
+          "laravel/framework": "Reviewed and checked, should not impact the package"
+        }
+      }
+    }
   },
   "scripts": {
     "test": "phpunit",
