@@ -44,6 +44,7 @@
     }
   },
   "scripts": {
+    "tinker": "testbench tinker",
     "test": "phpunit",
     "analyse": "phpstan analyse src tests",
     "format": "pint",
