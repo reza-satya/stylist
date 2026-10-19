@@ -2,9 +2,11 @@
 
 namespace FloatingPoint\Stylist\Theme;
 
-use Cache;
 use FloatingPoint\Stylist\Theme\Exceptions\ThemeNotFoundException;
 use Illuminate\Container\Container;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\View\ViewFinderInterface;
+use InvalidArgumentException;
 
 /**
  * Class Stylist
@@ -12,70 +14,53 @@ use Illuminate\Container\Container;
  * Manages a repository of themes that are registered. Can be used to activate specific themes,
  * search for a given theme, register new ones or even search for themes within your application
  * directory.
- *
- * @package FloatingPoint\Stylist\Theme
  */
 class Stylist
 {
     /**
      * The cache key is used for setting and retrieving the stylist theme cache.
-     *
-     * @var string
      */
-    private $cacheKey = 'stylist.themes';
+    private string $cacheKey = 'stylist.themes';
 
     /**
      * An array of registered themes.
-     *
-     * @var array Theme
      */
-    protected $themes = [];
+    protected array $themes = [];
 
     /**
      * The currently activated theme.
-     *
-     * @var Theme
      */
-    protected $activeTheme;
+    protected Theme $activeTheme;
 
     /**
      * Manages the loading of themes via various mechanisms.
+     */
+    private Loader $themeLoader;
+
+    private Container $app;
+
+    /**
+     * The view finder used by the application
+     * The finder needs to implement the method prependLocation(), for example, FileViewFinder
      *
-     * @var Loader
-     */
-    private $themeLoader;
-
-    /**
-     * @var Container
-     */
-    private $app;
-
-    /**
      * @var ViewFinderInterface
      */
-    private $view;
+    private $viewFinder;
 
-    /**
-     * @param Loader $themeLoader
-     * @param Container $app
-     */
     public function __construct(Loader $themeLoader, Container $app)
     {
         $this->themeLoader = $themeLoader;
         $this->app = $app;
-        $this->view = $this->app->make('view');
+        $this->viewFinder = $this->app->make('view')->getFinder();
     }
 
     /**
      * Register a new theme based on its path. An optional
      * parameter allows the theme to be activated as soon as its registered.
-     *
-     * @param Theme $theme
-     * @param bool $activate
      */
-    public function register(Theme $theme, $activate = false)
+    public function register(Theme $theme, bool $activate = false): void
     {
-        if (!$this->has($theme->getName())) {
+        if (! $this->has($theme->getName())) {
             $this->themes[] = $theme;
         }
 
@@ -87,12 +72,18 @@ class Stylist
     /**
      * Register a theme with Stylist based on its path.
      *
-     * @param string $path
-     * @param boolean $activate
+     * @throws InvalidArgumentException
      */
-    public function registerPath($path, $activate = false)
+    public function registerPath(string $path, bool $activate = false): void
     {
         $realPath = realpath($path);
+
+        if ($realPath === false) {
+            throw new InvalidArgumentException(
+                "Theme path does not exist: [$path]."
+            );
+        }
+
         $theme = $this->themeLoader->fromPath($realPath);
 
         $this->register($theme, $activate);
@@ -100,10 +91,8 @@ class Stylist
 
     /**
      * Register a number of themes based on the array of paths provided.
-     *
-     * @param array $paths
      */
-    public function registerPaths(array $paths)
+    public function registerPaths(array $paths): void
     {
         foreach ($paths as $path) {
             $this->registerPath($path);
@@ -113,12 +102,11 @@ class Stylist
     /**
      * Activate a theme. Activation can be done by the theme's name, or via a Theme object.
      *
-     * @param string|Theme $theme
      * @throws ThemeNotFoundException
      */
-    public function activate($theme)
+    public function activate(string|Theme $theme): void
     {
-        if (!$theme instanceof $theme) {
+        if (is_string($theme)) {
             $theme = $this->get($theme);
         }
 
@@ -129,8 +117,6 @@ class Stylist
 
     /**
      * Activates the view finder paths for a theme and its parents.
-     *
-     * @param Theme $theme
      */
     protected function activateFinderPaths(Theme $theme)
     {
@@ -138,26 +124,21 @@ class Stylist
             $this->activateFinderPaths($this->get($theme->getParent()));
         }
 
-        $this->view->getFinder()->prependLocation($theme->getPath().'/views/');
+        $this->viewFinder->prependLocation($theme->getPath().'/views/');
     }
 
     /**
      * Returns the currently active theme.
-     *
-     * @return Theme
      */
-    public function current()
+    public function current(): Theme
     {
         return $this->activeTheme;
     }
 
     /**
      * Checks to see whether a theme by a given name has been registered.
-     *
-     * @param string $themeName
-     * @return bool
      */
-    public function has($themeName)
+    public function has(string $themeName): bool
     {
         foreach ($this->themes as $theme) {
             if ($theme->getName() == $themeName) {
@@ -171,11 +152,9 @@ class Stylist
     /**
      * Retrieves a theme based on its name. If no theme is found it'll throw a ThemeNotFoundException.
      *
-     * @param string $themeName
-     * @return Theme
      * @throws ThemeNotFoundException
      */
-    public function get($themeName)
+    public function get(string $themeName): Theme
     {
         foreach ($this->themes as $theme) {
             if ($theme->getName() === $themeName) {
@@ -188,10 +167,8 @@ class Stylist
 
     /**
      * Returns an array of themes that have been registered with Stylist.
-     *
-     * @return array
      */
-    public function themes()
+    public function themes(): array
     {
         return $this->themes;
     }
@@ -202,10 +179,9 @@ class Stylist
      * registered, however - it is a costly operation, and should be cached once you've found the
      * themes.
      *
-     * @param $directory
      * @return array Returns an array of theme directory locations
      */
-    public function discover($directory)
+    public function discover(string $directory): array
     {
         $searchString = $directory.'/theme.json';
 
@@ -216,12 +192,9 @@ class Stylist
 
     /**
      * Will glob recursively for a files specified within the pattern.
-     *
-     * @param string $pattern
-     * @param int $flags
-     * @return array
      */
-    protected function rglob($pattern, $flags = 0) {
+    protected function rglob(string $pattern, int $flags = 0): array
+    {
         $files = glob($pattern, $flags);
 
         if ($files) {
@@ -230,7 +203,7 @@ class Stylist
 
         $files = [];
 
-        $possibleFiles = glob(dirname($pattern).'/*', GLOB_ONLYDIR|GLOB_NOSORT);
+        $possibleFiles = glob(dirname($pattern).'/*', GLOB_ONLYDIR | GLOB_NOSORT);
 
         if ($possibleFiles === false) {
             $possibleFiles = [];
@@ -248,9 +221,9 @@ class Stylist
      * to search your entire installation for themes. Whenever this method is called, it
      * will wipe the old cache file and re-write the new cache.
      *
-     * @param array $themes Must consist of Theme objects
+     * @param  array  $themes  Must consist of Theme objects
      */
-    public function cache(array $themes = [])
+    public function cache(array $themes = []): void
     {
         $cacheJson = [];
 
@@ -263,10 +236,8 @@ class Stylist
 
     /**
      * Clear any cache stylist may currently be using for configuration.
-     *
-     * @return void
      */
-    public function clearCache()
+    public function clearCache(): void
     {
         Cache::forget($this->cacheKey);
     }
@@ -275,9 +246,9 @@ class Stylist
      * Sets up stylist to use themes from the cache. Stylist uses Laravel's own caching
      * mechanisms, so this could be stored on the disk, in memcache or elsewhere.
      */
-    public function setupFromCache()
+    public function setupFromCache(): void
     {
-        if (!Cache::has($this->cacheKey)) {
+        if (! Cache::has($this->cacheKey)) {
             return;
         }
 
@@ -291,10 +262,8 @@ class Stylist
 
     /**
      * Return the key used for cache storage.
-     *
-     * @return string
      */
-    public function cacheKey()
+    public function cacheKey(): string
     {
         return $this->cacheKey;
     }

@@ -2,10 +2,14 @@
 
 namespace FloatingPoint\Stylist\Theme\Exceptions;
 
-class ThemeNotFoundException extends \Exception
+use RuntimeException;
+
+class ThemeNotFoundException extends RuntimeException
 {
-	public function __construct($themeName)
+    public function __construct(string $themeName)
     {
-        $this->message = "Theme [$themeName] is not registered with Stylist.";
+        parent::__construct(
+            "Theme [$themeName] is not registered with Stylist."
+        );
     }
 }
