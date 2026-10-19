@@ -110,7 +110,7 @@ class StylistTest extends TestCase
         $stylist = new Stylist(new Loader, $this->app);
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionmessage("Theme path does not exist: [Themes].");
+        $this->expectExceptionmessage('Theme path does not exist: [Themes].');
         $stylist->registerPath('Themes');
     }
 }

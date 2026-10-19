@@ -42,7 +42,7 @@ class Stylist
     /**
      * The view finder used by the application
      * The finder needs to implement the method prependLocation(), for example, FileViewFinder
-     * 
+     *
      * @var ViewFinderInterface
      */
     private $viewFinder;

@@ -24,7 +24,7 @@ class Json
 
     /**
      * Retrieves the JSON-decoded json file.
-     * 
+     *
      * @throws ThemeJsonNotFoundException
      */
     public function getJson()
