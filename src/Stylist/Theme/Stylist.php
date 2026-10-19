@@ -38,13 +38,19 @@ class Stylist
 
     private Container $app;
 
-    private ViewFinderInterface $view;
+    /**
+     * The view finder used by the application
+     * The finder needs to implement the method prependLocation(), for example, FileViewFinder
+     * 
+     * @var ViewFinderInterface
+     */
+    private $viewFinder;
 
     public function __construct(Loader $themeLoader, Container $app)
     {
         $this->themeLoader = $themeLoader;
         $this->app = $app;
-        $this->view = $this->app->make('view');
+        $this->viewFinder = $this->app->make('view')->getFinder();
     }
 
     /**
@@ -110,7 +116,7 @@ class Stylist
             $this->activateFinderPaths($this->get($theme->getParent()));
         }
 
-        $this->view->getFinder()->prependLocation($theme->getPath().'/views/');
+        $this->viewFinder->prependLocation($theme->getPath().'/views/');
     }
 
     /**
