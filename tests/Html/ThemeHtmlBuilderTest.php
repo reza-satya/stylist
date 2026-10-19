@@ -13,7 +13,10 @@ class ThemeHtmlBuilderTest extends TestCase
 
     protected function init()
     {
-        $this->builder = new ThemeHtmlBuilder($this->app->make(Html::class), $this->app['url']);
+        $this->builder = new ThemeHtmlBuilder(
+            $this->app->make(Html::class),
+            $this->app->make('url')
+        );
 
         StylistFacade::registerPath(__DIR__.'/../Stubs/Themes/Parent');
         StylistFacade::activate('Parent theme');
