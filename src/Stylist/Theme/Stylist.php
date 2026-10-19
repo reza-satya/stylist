@@ -6,6 +6,7 @@ use FloatingPoint\Stylist\Theme\Exceptions\ThemeNotFoundException;
 use Illuminate\Container\Container;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\View\ViewFinderInterface;
+use InvalidArgumentException;
 
 /**
  * Class Stylist
@@ -71,10 +72,18 @@ class Stylist
     /**
      * Register a theme with Stylist based on its path.
      *
+     * @throws InvalidArgumentException
      */
     public function registerPath(string $path, bool $activate = false): void
     {
         $realPath = realpath($path);
+
+        if ($realPath === false) {
+            throw new InvalidArgumentException(
+                "Theme path does not exist: [$path]."
+            );
+        }
+
         $theme = $this->themeLoader->fromPath($realPath);
 
         $this->register($theme, $activate);

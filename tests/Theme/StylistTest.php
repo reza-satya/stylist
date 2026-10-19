@@ -6,6 +6,7 @@ use FloatingPoint\Stylist\Theme\Exceptions\ThemeNotFoundException;
 use FloatingPoint\Stylist\Theme\Loader;
 use FloatingPoint\Stylist\Theme\Stylist;
 use FloatingPoint\Stylist\Theme\Theme;
+use InvalidArgumentException;
 use Tests\TestCase;
 
 class StylistTest extends TestCase
@@ -91,5 +92,14 @@ class StylistTest extends TestCase
 
         $this->assertTrue($view->exists('partials.menu'));
         $this->assertSame('Overload', $view->make('partials.menu')->render());
+    }
+
+    public function test_theme_path_does_not_exist()
+    {
+        $stylist = new Stylist(new Loader, $this->app);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionmessage("Theme path does not exist: [Themes].");
+        $stylist->registerPath('Themes');
     }
 }
