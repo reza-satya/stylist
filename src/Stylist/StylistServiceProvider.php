@@ -5,7 +5,6 @@ namespace FloatingPoint\Stylist;
 use FloatingPoint\Stylist\Html\ThemeHtmlBuilder;
 use FloatingPoint\Stylist\Theme\Loader;
 use FloatingPoint\Stylist\Theme\Stylist;
-use FloatingPoint\Stylist\Theme\UrlGenerator;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\AggregateServiceProvider;
 use Spatie\Html\Html;
@@ -82,7 +81,7 @@ class StylistServiceProvider extends AggregateServiceProvider
         $this->app->singleton('stylist.theme', function ($app) {
             return new ThemeHtmlBuilder(
                 $app->make(Html::class),
-                $app->make(UrlGenerator::class)
+                $app->make('url')
             );
         });
     }
