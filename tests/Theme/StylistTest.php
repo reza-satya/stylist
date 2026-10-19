@@ -22,6 +22,17 @@ class StylistTest extends TestCase
         $this->assertEquals($stylist->current(), $theme);
     }
 
+    public function test_activation_accepts_theme_object_and_theme_name(): void
+    {
+        $stylist = new Stylist(new Loader, $this->app);
+        $theme = new Theme('name', 'description', 'path');
+        $stylist->register($theme);
+        $stylist->activate('name');
+        $this->assertSame($theme, $stylist->current());
+        $stylist->activate($theme);
+        $this->assertSame($theme, $stylist->current());
+    }
+
     public function test_theme_discovery()
     {
         $stylist = new Stylist(new Loader, $this->app);

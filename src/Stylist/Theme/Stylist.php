@@ -102,12 +102,11 @@ class Stylist
     /**
      * Activate a theme. Activation can be done by the theme's name, or via a Theme object.
      *
-     * @param string|Theme $theme
      * @throws ThemeNotFoundException
      */
-    public function activate($theme)
+    public function activate(string|Theme $theme): void
     {
-        if (!$theme instanceof $theme) {
+        if (is_string($theme)) {
             $theme = $this->get($theme);
         }
 
