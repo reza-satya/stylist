@@ -2,35 +2,30 @@
 
 namespace FloatingPoint\Stylist\Theme;
 
-use File;
 use FloatingPoint\Stylist\Theme\Exceptions\ThemeJsonNotFoundException;
+use Illuminate\Support\Facades\File;
 
 class Json
 {
     /**
      * Stores the theme object.
-     *
-     * @var Theme
      */
-    private $themePath;
+    private string $themePath;
 
     /**
      * Stores the json-decoded file as an array.
      */
     private $json;
 
-    /**
-     * @param Theme $theme
-     */
-    public function __construct($themePath)
+    public function __construct(string $themePath)
     {
         $this->themePath = $themePath;
     }
 
     /**
      * Retrieves the JSON-decoded json file.
-     *
-     * @return array
+     * 
+     * @throws ThemeJsonNotFoundException
      */
     public function getJson()
     {
@@ -40,7 +35,7 @@ class Json
 
         $themeJsonPath = $this->themePath.'/theme.json';
 
-        if (!File::exists($themeJsonPath)) {
+        if (! File::exists($themeJsonPath)) {
             throw new ThemeJsonNotFoundException($this->themePath);
         }
 
@@ -49,11 +44,8 @@ class Json
 
     /**
      * Returns the value for a specific json attribute.
-     *
-     * @param string $attribute
-     * @return mixed
      */
-    public function getJsonAttribute($attribute)
+    public function getJsonAttribute(string $attribute): mixed
     {
         $json = $this->getJson();
 
