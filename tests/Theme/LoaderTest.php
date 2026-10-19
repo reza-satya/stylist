@@ -1,18 +1,20 @@
 <?php
+
 namespace Tests\Theme;
 
 use FloatingPoint\Stylist\Theme\Loader;
+use Tests\TestCase;
 
-class LoaderTest extends \Tests\TestCase
+class LoaderTest extends TestCase
 {
     private $loader;
 
-	public function init()
+    protected function init()
     {
-        $this->loader = new Loader();
+        $this->loader = new Loader;
     }
 
-    public function testFromPath()
+    public function test_from_path()
     {
         $theme = $this->loader->fromPath(__DIR__.'/../Stubs/Themes/Parent/');
 
@@ -20,7 +22,7 @@ class LoaderTest extends \Tests\TestCase
         $this->assertEquals('This is a parent theme.', $theme->getDescription());
     }
 
-    public function testFromCache()
+    public function test_from_cache()
     {
         $cachedTheme = new \stdClass;
         $cachedTheme->name = 'name';
